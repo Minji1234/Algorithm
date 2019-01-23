@@ -1,0 +1,59 @@
+import java.util.Arrays;
+
+public class merge_sort {
+	private static void sort(int[] arr)
+	{
+		int[] sorted = new int[arr.length];
+		merge_sort(arr, 0, arr.length-1, sorted);
+	}
+	private static void merge_sort(int[] arr, int start, int end, int[] sorted)
+	{
+		if (start < end)
+		{
+			int mid = (start+end)/2;
+			merge_sort(arr, start, mid, sorted);
+			merge_sort(arr, mid+1, end, sorted);
+			merge(arr, start, mid, end, sorted);
+		}
+	}
+	private static void merge(int[] arr, int start, int mid, int end, int[] sorted)
+	{
+		int a = start;
+		int b = mid + 1;
+		int tmp = start;
+		while ((a <= mid) && (b <= end))
+		{
+			if (arr[a] <= arr[b])
+			{
+				sorted[tmp++] = arr[a++];
+			}
+			else
+			{
+				sorted[tmp++] = arr[b++];
+			}
+		}
+		while (a <= mid)
+		{
+			sorted[tmp++] = arr[a++];
+		}
+		while (b <= end)
+		{
+			sorted[tmp++] = arr[b++];
+		}
+		// important
+		for (int i = start; i <= end; i++)
+		{
+			arr[i] = sorted[i];
+		}
+	}
+	public static void main(String[] args)
+	{
+		int[] arr_even = {8, 31, 48, 73, 3, 65, 20, 29, 11, 15};
+		sort(arr_even);
+		System.out.println(Arrays.toString(arr_even));
+		int[] arr_odd = {8, 31, 48, 73, 3, 65, 20, 29, 11};
+		sort(arr_odd);
+		System.out.println(Arrays.toString(arr_odd));
+		System.out.println("Finish");
+	}
+}
