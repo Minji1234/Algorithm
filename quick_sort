@@ -5,16 +5,6 @@ public class quick_sort {
 	{
 		quick_sort(arr, 0, arr.length-1);
 	}
-	public static void main(String[] args)
-	{
-		int[] arr_even = {8, 31, 48, 73, 3, 65, 20, 29, 11, 15};
-		sort(arr_even);
-		System.out.println(Arrays.toString(arr_even));
-		int[] arr_odd = {8, 31, 48, 73, 3, 65, 20, 29, 11};
-		sort(arr_odd);
-		System.out.println(Arrays.toString(arr_odd));
-		System.out.println("출력 끝");
-	}
 	private static void quick_sort(int[] arr, int start, int end)
 	{
 		if (start < end)
@@ -45,5 +35,15 @@ public class quick_sort {
 		int t = arr[b];
 		arr[b] = arr[a];
 		arr[a] = t;
+	}
+	public static void main(String[] args)
+	{
+		int[] arr_even = {8, 31, 48, 73, 3, 65, 20, 29, 11, 15};
+		sort(arr_even);
+		System.out.println(Arrays.toString(arr_even));
+		int[] arr_odd = {8, 31, 48, 73, 3, 65, 20, 29, 11};
+		sort(arr_odd);
+		System.out.println(Arrays.toString(arr_odd));
+		System.out.println("Finish");
 	}
 }
