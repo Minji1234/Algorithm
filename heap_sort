@@ -1,0 +1,64 @@
+import java.util.*;
+
+public class heap_sort { // max heap
+	private static void sort(int[] arr)
+	{
+		heap_sort(arr);
+	}
+	public static void heap_sort(int[] arr)
+	{
+		int len = arr.length - 1;
+		buildHeap(arr, len);
+		for (int i = len; i > 0; i--)
+		{
+			swap(arr, 0, i);
+			heapify(arr, 0, i - 1);
+		}
+	}
+	private static void buildHeap(int[] arr, int len)
+	{
+		int start = (len - 1) / 2;
+		for (int i = start; i >= 0; i--)
+		{
+			heapify(arr, i, len - 1);
+		}
+	}
+	private static void heapify(int[] arr, int startNode, int n)
+	{
+		if (startNode*2 + 1 <= n)
+		{
+			int biggest;
+			if (startNode*2 + 2 <= n)
+			{
+				if (arr[startNode*2 + 2] <= arr[startNode*2 + 1])
+					biggest = startNode*2 + 1;
+				else
+					biggest = startNode*2 + 2;
+			}
+			else
+				biggest = startNode*2 + 1;
+			
+			if (arr[startNode] < arr[biggest])
+			{
+				swap(arr, startNode, biggest);
+				heapify(arr, biggest, n);
+			}
+		}
+	}
+	private static void swap(int[] arr, int a, int b)
+	{
+		int t = arr[b];
+		arr[b] = arr[a];
+		arr[a] = t;
+	}
+	public static void main(String[] args)
+	{
+		int[] arr_even = {8, 31, 48, 73, 3, 65, 20, 29, 11, 15};
+		sort(arr_even);
+		System.out.println(Arrays.toString(arr_even));
+		int[] arr_odd = {8, 31, 48, 73, 3, 65, 20, 29, 11};
+		sort(arr_odd);
+		System.out.println(Arrays.toString(arr_odd));
+		System.out.println("Finish");
+	}
+}
