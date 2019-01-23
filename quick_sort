@@ -1,0 +1,49 @@
+import java.util.*;
+
+public class quick_sort {
+	public static void sort(int[] arr)
+	{
+		quick_sort(arr, 0, arr.length-1);
+	}
+	public static void main(String[] args)
+	{
+		int[] arr_even = {8, 31, 48, 73, 3, 65, 20, 29, 11, 15};
+		sort(arr_even);
+		System.out.println(Arrays.toString(arr_even));
+		int[] arr_odd = {8, 31, 48, 73, 3, 65, 20, 29, 11};
+		sort(arr_odd);
+		System.out.println(Arrays.toString(arr_odd));
+		System.out.println("출력 끝");
+	}
+	private static void quick_sort(int[] arr, int start, int end)
+	{
+		if (start < end)
+		{
+			int q = partition(arr, start, end);
+			quick_sort(arr, start, q-1);
+			quick_sort(arr, q+1, end);
+		}
+	}
+	private static int partition(int[] arr, int start, int end)
+	{
+		int pivot = arr[end];
+		int i = start - 1; // smaller then pivot region - end limit.
+		int j = start; // increment every time. bigger then pivot region - start limit.
+		while (j < end)
+		{
+			if(arr[j] <= arr[end])
+			{
+				swap(arr, ++i, j);
+			}
+			j++;
+		}
+		swap(arr, i+1, end);
+		return i+1;
+	}
+	private static void swap(int[] arr, int a, int b)
+	{
+		int t = arr[b];
+		arr[b] = arr[a];
+		arr[a] = t;
+	}
+}
