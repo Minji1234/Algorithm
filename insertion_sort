@@ -1,0 +1,49 @@
+import java.util.*;
+
+public class insertion_sort {
+	private static void sort(int[] arr)
+	{
+		insertion_sort(arr);
+	}
+	private static void insertion_sort(int[] arr)
+	{
+		int l;
+		for (int i = 0; i < arr.length - 1; i++)
+		{
+			l = findLocus(arr, i);
+			put(arr, arr[arr.length - 1], l);
+		}
+	}
+	private static int findLocus(int[] arr, int i)
+	{
+		int cnt = 0;
+		while (cnt <= i)
+		{
+			if (arr[arr.length - 1] < arr[cnt])
+			{
+				return cnt;
+			}
+			else
+				cnt++;
+		}
+		return cnt;
+	}
+	private static void put(int[] arr, int val, int locus)
+	{
+		for (int i = arr.length - 1; i >= locus + 1; i--)
+		{
+			arr[i] = arr[i - 1];
+		}
+		arr[locus] = val;
+	}
+	public static void main(String[] args)
+	{
+		int[] arr_even = {8, 31, 48, 73, 3, 65, 20, 29, 11, 15};
+		sort(arr_even);
+		System.out.println(Arrays.toString(arr_even));
+		int[] arr_odd = {8, 31, 48, 73, 3, 65, 20, 29, 11};
+		sort(arr_odd);
+		System.out.println(Arrays.toString(arr_odd));
+		System.out.println("Finish");
+	}
+}
