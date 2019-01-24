@@ -1,0 +1,35 @@
+import java.util.Arrays;
+
+public class bubble_sort {
+	private static void sort(int[] arr)
+	{
+		bubble_sort(arr);
+	}
+	private static void bubble_sort(int[] arr)
+	{
+		for (int i = arr.length - 1; i >= 1; i--)
+		{
+			for (int j = 0; i > j; j++)
+			{
+				if (arr[j] > arr[j+1])
+					swap(arr, j, j+1);
+			}
+		}
+	}
+	private static void swap(int[] arr, int a, int b)
+	{
+		int t = arr[b];
+		arr[b] = arr[a];
+		arr[a] = t;
+	}
+	public static void main(String[] args)
+	{
+		int[] arr_even = {8, 31, 48, 73, 3, 65, 20, 29, 11, 15};
+		sort(arr_even);
+		System.out.println(Arrays.toString(arr_even));
+		int[] arr_odd = {8, 31, 48, 73, 3, 65, 20, 29, 11};
+		sort(arr_odd);
+		System.out.println(Arrays.toString(arr_odd));
+		System.out.println("Finish");
+	}
+}
