@@ -177,8 +177,4 @@ public class IntTreeNode {
 			getMax4Tree(node.getRight());
 		}
 	}
-	public int getHeight()
-	{
-		return getHeight(this);
-	}
 }
