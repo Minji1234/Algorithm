@@ -183,7 +183,7 @@ public class IntTree {
 		e.setRight(39);
 		f.setLeft(5);
 		tree.printCondition();
-		
+	
 		IntTree tree2 = new IntTree(3);
 		tree2.printCondition();
 	}
