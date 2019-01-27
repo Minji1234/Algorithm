@@ -1,6 +1,5 @@
 public class BST extends IntTree
 {
-	
 	public BST(IntTreeNode node)
 	{
 		super(node);
