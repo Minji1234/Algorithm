@@ -1,0 +1,40 @@
+import java.util.*; // Dynamic Programming
+
+public class BJ1535 {
+	public static void main(String[] args)
+	{
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		int[][] c = new int[n+1][100];
+		int[] v = new int[n]; // happiness
+		int[] w = new int[n]; // minus health
+		for (int i = 0; i < n; i++)
+		{
+			w[i] = sc.nextInt();
+		}
+		for (int i = 0; i < n; i++)
+		{
+			v[i] = sc.nextInt();
+		}
+		
+		for (int i = 0; i < 100; i++)
+		{
+			c[0][i] = 0;
+		}
+		for (int i = 1; i <= n; i++)
+		{
+			for (int W = 0; W <= 99; W++)
+			{
+				if (W < w[i-1])
+				{
+					c[i][W] = c[i-1][W];
+				}
+				else
+				{
+					c[i][W] = Math.max(c[i-1][W], v[i-1] + c[i-1][W-w[i-1]]);
+				}
+			}
+		}
+		System.out.println(c[n][99]);
+	}
+}
