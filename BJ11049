@@ -1,0 +1,59 @@
+import java.util.*; // dynamic programming
+
+public class BJ11049 {
+	public static void PrintOptimalParens(int[][] s, int i, int j) // this method is not necessary for solving problem.
+	{
+		if (i == j)
+			System.out.print(i);
+		else
+		{
+			System.out.print("(");
+			PrintOptimalParens(s, i, s[i][j]);
+			PrintOptimalParens(s, s[i][j]+1, j);
+			System.out.print(")");
+		}
+	}
+	public static void main(String[] args)
+	{
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt(); // n = p.length - 1
+		int[] p = new int[n+1];
+		int cnt = 0;
+		while (cnt < n)
+		{
+			p[cnt++] = sc.nextInt();
+			if (cnt == n)
+				break;
+			sc.nextInt(); // ignore
+		}
+		p[n] = sc.nextInt();
+		
+		
+		int[][] m = new int[n+1][n+1];
+		int[][] s = new int[n+1][n+1];
+		int j, q = 0;
+		for (int i = 0; i < n; i++)
+		{
+			m[i][i] = 0;
+		}
+		for (int l = 2; l <= n; l++) // l means length
+		{
+			for (int i = 1; i <= n - l + 1; i++) // i means starting point
+			{
+				j = i + l - 1; // j means end point
+				m[i][j] = Integer.MAX_VALUE;
+				for (int k = i; k <= j - 1; k++)
+				{
+					q = m[i][k] + m[k+1][j] + p[i-1]*p[k]*p[j];
+					if (q < m[i][j])
+					{
+						m[i][j] = q;
+						s[i][j] = k;
+					}
+				}
+			}
+		}
+		System.out.println(m[1][n]);
+		PrintOptimalParens(s, 1, n);
+	}
+}
