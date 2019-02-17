@@ -1,0 +1,58 @@
+import java.io.*;
+import java.util.*;
+
+public class 2662 {
+	public static void main(String[] args) throws IOException
+	{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int money = Integer.parseInt(st.nextToken());
+		int numOfCorp = Integer.parseInt(st.nextToken());
+		int[][] val = new int[money+1][numOfCorp+1];
+		int[][] c = new int[numOfCorp+1][money+1];
+		int[][] invest = new int[money+1][numOfCorp+1];
+		int[] invPerCorp = new int[numOfCorp+1];
+		for (int i = 1; i <= money; i++)
+		{
+			st = new StringTokenizer(br.readLine());
+			st.nextToken(); //ignore
+			for (int j = 1; j <= numOfCorp; j++)
+			{
+				val[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
+		
+		
+//		for (int i = 0; i <= money; i++)
+//		{
+//			c[0][i] = 0;
+//		}
+		for (int i = 1; i <= numOfCorp; i++)
+		{
+			for (int w = 0; w <= money; w++)
+			{
+				int max = 0;
+				for (int k = 0; k <= w; k++)
+				{
+					if (max <= val[k][i] + c[i-1][w-k])
+					{
+						max = val[k][i] + c[i-1][w-k];
+						invest[w][i] = k;
+					}
+				}
+				c[i][w] = max;
+			}
+		}
+		int m = money;
+		for (int i = numOfCorp; i >= 1; i--)
+		{
+			invPerCorp[i] = invest[m][i];
+			m -= invest[m][i];
+		}
+		System.out.println(c[numOfCorp][money]);
+		for (int i = 1; i <= numOfCorp; i++)
+		{
+			System.out.print(invPerCorp[i] + " ");
+		}
+	}
+}
