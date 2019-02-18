@@ -33,7 +33,8 @@ public class BJ2805 { // Binary Search
 			}
 			if (tmp >= wanted)
 			{
-				if (heighest < mid)
+				if (heighest < mid) // As there are many 'mid's which result in adjust tmp values(like tmp >= wanted),
+						    // we have to save the largest value of mid.
 				{
 					heighest = mid;
 				}
