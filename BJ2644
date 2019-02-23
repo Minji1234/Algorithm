@@ -70,6 +70,7 @@ public class BJ2644 { // BFS
 				}
 			}
 		}
+		t.color = 2;
 		Node goal = nodes.get(to);
 		if (goal.dis == Integer.MAX_VALUE)
 			System.out.println(-1);
