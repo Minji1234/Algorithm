@@ -45,7 +45,7 @@ public class BJ2644 { // BFS
 			st = new StringTokenizer(br.readLine());
 			a = Integer.parseInt(st.nextToken());
 			b = Integer.parseInt(st.nextToken());
-			graph[a].add(b);
+			graph[a].add(b); // start adding nodes graph[~~] from index 0;
 			graph[b].add(a);
 		}
 		Queue<Node> q = new LinkedList<Node>();
@@ -57,7 +57,7 @@ public class BJ2644 { // BFS
 		{
 			Node tmp = q.poll();
 			int siz = graph[tmp.name].size();
-			for (int i = 0; i < siz; i++) // As when you added node at 'graph[]', you started from index 0.
+			for (int i = 0; i < siz; i++) // Because when you added node at 'graph[]', you started from index 0.
 			{
 				int nuName = graph[tmp.name].get(i);
 				Node t = nodes.get(nuName);
@@ -66,11 +66,11 @@ public class BJ2644 { // BFS
 					t.dis = tmp.dis + 1;
 					t.color = 1;
 					t.pcd = tmp;
-					q.offer(t);
+					q.offer(t); // Only node with white colors can enter queue.
 				}
 			}
 		}
-		t.color = 2;
+		tmp.color = 2; // changes the color from grey to black.
 		Node goal = nodes.get(to);
 		if (goal.dis == Integer.MAX_VALUE)
 			System.out.println(-1);
