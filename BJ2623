@@ -1,0 +1,72 @@
+import java.io.*;
+import java.util.*;
+
+public class BJ2623 { // Topological sorting, DFS
+	static ArrayList<Integer>[] array;
+	static int time;
+	static int[] finishLocus;
+	static int locus;
+	static int[] visited; // 0 - white, 1 - grey, 2 - black.
+	public static void main(String[] args) throws IOException
+	{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int numOfVertex = Integer.parseInt(st.nextToken());
+		int inputCount = Integer.parseInt(st.nextToken());
+		array = new ArrayList[numOfVertex+1];
+		visited = new int[numOfVertex+1]; // set to false.
+		time = 0;
+		finishLocus = new int[numOfVertex+1];
+		locus = 1;
+		for (int i = 0; i <= numOfVertex; i++)
+		{
+			array[i] = new ArrayList<Integer>();
+		}
+		int from, to = 0;
+		for (int i = 0; i < inputCount; i++)
+		{
+			st = new StringTokenizer(br.readLine());
+			int sz = Integer.parseInt(st.nextToken());
+			from = Integer.parseInt(st.nextToken());
+			for (int j = 0; j < sz - 1; j++)
+			{
+				to = Integer.parseInt(st.nextToken());
+				array[from].add(to);
+				from = to;
+			}
+		}
+		
+		
+		for (int i = 1; i <= numOfVertex; i++)
+		{
+			if (visited[i] == 0)
+			{
+				DFS_VISIT(i);
+			}
+		}
+		for (int i = numOfVertex; i > 0; i--)
+		{
+			System.out.println(finishLocus[i]);
+		}
+	}
+	private static void DFS_VISIT(int from)
+	{
+		visited[from] = 1; // grey
+		int size = array[from].size();
+		for (int i = 0; i < size; i++)
+		{
+			int v = array[from].get(i);
+			if (visited[v] == 0)
+			{
+				DFS_VISIT(v);
+			}
+			else if (visited[v] == 1) // grey - back edge - cycle - no topological sorting.
+			{
+				System.out.println(0);
+				System.exit(0);;
+			}
+		}
+		visited[from] = 2; // black
+		finishLocus[locus++] = from;
+	}
+}
