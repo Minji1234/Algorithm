@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class BJ2150 { // Strongly Connected Component
+public class BJ2150 {
 	static int position, numOfSets;
 	static boolean[] visited;
 	static int[] finishingTime;
@@ -51,6 +51,7 @@ public class BJ2150 { // Strongly Connected Component
 			u = finishingTime[i];
 			if (!visited[u])
 			{
+				sets.add(new ArrayList<Integer>());
 				scc(u);
 				numOfSets++;
 			}
@@ -91,7 +92,6 @@ public class BJ2150 { // Strongly Connected Component
 	private static void scc(int u)
 	{
 		visited[u] = true;
-		sets.add(new ArrayList<Integer>());
 		sets.get(numOfSets).add(u);
 		int size = BWedges[u].size();
 		int v = 0;
