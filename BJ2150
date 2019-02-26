@@ -1,0 +1,123 @@
+import java.io.*;
+import java.util.*;
+
+public class BJ2150 { // Strongly Connected Component
+	static int position, numOfSets;
+	static boolean[] visited;
+	static int[] finishingTime;
+	static ArrayList<Integer>[] edges;
+	static ArrayList<Integer>[] BWedges;
+	static ArrayList<ArrayList<Integer>> sets;
+	public static void main(String[] args) throws IOException
+	{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int numOfVertex = Integer.parseInt(st.nextToken());
+		int numOfEdge = Integer.parseInt(st.nextToken());
+		position = 0;
+		visited = new boolean[numOfVertex+1];
+		finishingTime = new int[numOfVertex+1];
+		edges = new ArrayList[numOfVertex+1];
+		BWedges = new ArrayList[numOfVertex+1];
+		for (int i = 0; i <= numOfVertex; i++)
+		{
+			edges[i] = new ArrayList<Integer>();
+			BWedges[i] = new ArrayList<Integer>();
+		}
+		int from, to = 0;
+		for (int i = 0; i < numOfEdge; i++)
+		{
+			st = new StringTokenizer(br.readLine());
+			from = Integer.parseInt(st.nextToken());
+			to = Integer.parseInt(st.nextToken());
+			edges[from].add(to); // diagraph.
+			BWedges[to].add(from);
+		}
+		
+		
+		for (int i = 1; i <= numOfVertex; i++)
+		{
+			if (!visited[i])
+			{
+				VISIT_DFS(i);
+			}
+		}
+		visited = new boolean[numOfVertex+1]; //reset.
+		int u = 0;
+		numOfSets = 0;
+		sets = new ArrayList<ArrayList<Integer>>();
+		for (int i = numOfVertex; i >= 1; i--)
+		{
+			u = finishingTime[i];
+			if (!visited[u])
+			{
+				scc(u);
+				numOfSets++;
+			}
+		}
+		System.out.println(numOfSets);
+		ArrayList<Integer> arr1 = null;
+		ArrayList<Integer> arr2 = null;
+		ArrayList<Integer> arr3 = null;
+		for (int i = 0; i < numOfSets; i++)
+		{
+			arr1 = sets.get(i);
+			Collections.sort(arr1);
+		}
+		for (int i = 0; i < numOfSets - 1; i++)
+		{
+			for (int j = 0; j < numOfSets - 1 - i; j++)
+			{
+				arr1 = sets.get(j);
+				arr2 = sets.get(j+1);
+				if (arr1.get(0) > arr2.get(0))
+				{
+					arr3 = arr1;
+					sets.set(j, arr2);
+					sets.set(j+1, arr3);
+				}
+			}
+		}
+		for (int i = 0; i < numOfSets; i++)
+		{
+			arr1 = sets.get(i);
+			for (int j = 0; j < arr1.size(); j++)
+			{
+				System.out.print(arr1.get(j) + " ");
+			}
+			System.out.println(-1);
+		}
+	}
+	private static void scc(int u)
+	{
+		visited[u] = true;
+		sets.add(new ArrayList<Integer>());
+		sets.get(numOfSets).add(u);
+		int size = BWedges[u].size();
+		int v = 0;
+		for (int i = 0; i < size; i++)
+		{
+			v = BWedges[u].get(i);
+			if (!visited[v])
+			{
+				scc(v);
+			}
+		}
+	}
+	private static void VISIT_DFS(int v)
+	{
+		visited[v] = true;
+		int size = edges[v].size();
+		int u = 0;
+		for (int i = 0; i < size; i++)
+		{
+			u = edges[v].get(i);
+			if (!visited[u])
+			{
+				VISIT_DFS(u);
+			}
+		}
+		position++;
+		finishingTime[position] = v;
+	}
+}
