@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class BJ1197 {
+public class BJ1197 { // MST-KRUSKAL
 	static ArrayList<Node> edges;
 	static int[] parents;
 	static int[] rank;
