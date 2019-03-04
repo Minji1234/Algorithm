@@ -1,0 +1,83 @@
+import java.io.*;
+import java.util.*;
+
+public class BJ1197 {
+	static ArrayList<Node> edges;
+	static int[] parents;
+	static int[] rank;
+	public static class Node implements Comparable<Node>
+	{
+		int v1, v2, w;
+		public Node(int a, int b, int c)
+		{
+			v1 = a;
+			v2 = b;
+			w = c;
+		}
+		public int compareTo(Node v)
+		{
+			return w - v.w;
+		}
+	}
+	public static int FIND_SET(int a)
+	{
+		if (parents[a] != a)
+			parents[a] = FIND_SET(parents[a]);
+		return parents[a];
+	}
+	public static void UNION(int a, int b)
+	{
+		LINK(FIND_SET(a), FIND_SET(b));
+	}
+	public static void LINK(int a, int b)
+	{
+		if (rank[a] > rank[b])
+		{
+			parents[b] = a;
+		}
+		else
+		{
+			parents[a] = b;
+			if (rank[a] == rank[b])
+				rank[b]++;
+		}
+	}
+	public static void main(String[] args) throws IOException
+	{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int numOfVt = Integer.parseInt(st.nextToken());
+		edges = new ArrayList<Node>();
+		parents = new int[numOfVt+1];
+		rank = new int[numOfVt+1]; // set to 0.
+		for (int i = 1; i <= numOfVt; i++)
+		{
+			parents[i] = i; // MAKE-SET(i)
+		}
+		int op = Integer.parseInt(st.nextToken());
+		int a, b, c = 0;
+		for (int i = 0; i < op; i++)
+		{
+			st = new StringTokenizer(br.readLine());
+			a = Integer.parseInt(st.nextToken()); // vertex
+			b = Integer.parseInt(st.nextToken()); // vertex
+			c = Integer.parseInt(st.nextToken()); // weight
+			edges.add(new Node(a, b, c));
+		}
+		Collections.sort(edges);
+		Node n = null;
+		int WS = 0;
+		for (int i = 0; i < op; i++)
+		{
+			n = edges.get(i);
+			a = n.v1;
+			b = n.v2;
+			if (FIND_SET(a) != FIND_SET(b))
+			{
+				WS += n.w;
+				UNION(a, b);
+			}
+		}
+		System.out.println(WS);
+	}
+}
