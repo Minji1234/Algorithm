@@ -1,0 +1,95 @@
+import java.io.*;
+import java.util.*;
+
+public class BJ1865 { // Bellman-Ford
+	public static class VT
+	{
+		int from, to, w;
+		public VT(int f, int t, int w)
+		{
+			this.from = f;
+			this.to = t;
+			this.w = w;
+		}
+	}
+	static int[] parents;
+	static VT[] edges;
+	static int[] d;
+	public static void main(String[] args) throws IOException
+	{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int numOfCases = Integer.parseInt(st.nextToken());
+		int VTnum, EDnum, WHnum = 0;
+		int from, to, w = 0;
+		for (int i = 0; i < numOfCases; i++)
+		{
+			st = new StringTokenizer(br.readLine());
+			VTnum = Integer.parseInt(st.nextToken());
+			EDnum = Integer.parseInt(st.nextToken());
+			WHnum = Integer.parseInt(st.nextToken());
+			edges = new VT[EDnum*2+WHnum+1];
+			int count = 0;
+			for (int j = 1; j <= EDnum + WHnum; j++)
+			{
+				st = new StringTokenizer(br.readLine());
+				from = Integer.parseInt(st.nextToken());
+				to = Integer.parseInt(st.nextToken());
+				w = Integer.parseInt(st.nextToken());
+				if (j <= EDnum)
+				{
+					edges[count++] = new VT(from, to, w);
+					edges[count++] = new VT(to, from, w);
+				}
+				else
+				{
+					edges[count++] = new VT(from, to, -w);
+				}
+			}
+			
+			
+			
+			// INITIALIZE-SINGLE-SOURCE
+			parents = new int[VTnum+1]; // reset to 0 - which means NIL.
+			d = new int[VTnum+1];
+			Arrays.fill(d, Integer.MAX_VALUE); // set to infinity.
+			d[1] = 0; // starting vertex.
+			
+			for (int k = 1; k <= VTnum - 1; k++)
+			{
+				for (int l = 0; l < 2*EDnum+WHnum; l++)
+				{
+					RELAX(edges[l]);
+				}
+			}
+			
+			boolean brk = false;
+			for (int l = 0; l < count; l++)
+			{
+				if (d[edges[l].to] > d[edges[l].from] + edges[l].w)
+				{
+					System.out.println("YES");
+					brk = true;
+					break;
+				}
+			}
+			if (!brk)
+			{
+				System.out.println("NO");
+			}
+		}
+	}
+	private static void RELAX(VT e) // from vertex u to v.
+	{
+		int u = e.from;
+		int v = e.to;
+		int w = e.w;
+		if (d[u] == Integer.MAX_VALUE) // PLEASE CHECK!
+			return;
+		if (d[v] > d[u] + w)
+		{
+			d[v] = d[u] + w;
+			parents[v] = u;
+		}
+	}
+}
