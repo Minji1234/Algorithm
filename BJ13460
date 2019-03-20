@@ -1,0 +1,138 @@
+import java.io.*;
+import java.util.*;
+										// refered to following codes.
+										// Credit: http://boj.kr/4b390647d89e439da3917d37c5cd9b3a
+class vertex
+{
+	int x;
+	int y;
+	
+	public vertex(int x, int y)
+	{
+		this.x = x;
+		this.y = y;
+	}
+}
+
+public class BJ13460 { // BFS
+	public static void main(String[] args) throws IOException
+	{
+		int[][] locus = { {0, -1}, {1, 0}, {0, 1}, {-1, 0} }; // left, down, right, up.
+				
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int row, col;
+		row = Integer.parseInt(st.nextToken());
+		col = Integer.parseInt(st.nextToken());
+		char[][] board = new char[row+1][col+1];
+		int Rrow = 0, Rcol = 0, Brow = 0, Bcol = 0;
+		char ch = 0;
+		for (int i = 1; i <= row; i++)
+		{
+			String str = br.readLine();
+			for (int j = 1; j <= col; j++)
+			{
+				 ch = str.charAt(j-1);
+				 if (ch == 'R')
+				 {
+					 Rrow = i;
+					 Rcol = j;
+					 board[i][j] = '.'; // important
+				 }
+				 else if (ch == 'B')
+				 {
+					 Brow = i;
+					 Bcol = j;
+					 board[i][j] = '.'; // important
+				 }
+				 else
+				 {
+					 board[i][j] = ch;
+				 }
+			}
+		}
+		
+		
+		Queue<vertex> q = new LinkedList<vertex>();
+		Queue<vertex> bq = new LinkedList<vertex>();
+		q.add(new vertex(Rrow, Rcol));
+		bq.add(new vertex(Brow, Bcol));
+		int tryNum = 0;
+		int Rr = 0, Rc = 0, Br = 0, Bc = 0, Rmoving = 0, Bmoving = 0;
+		int limit = 1, count = 1;
+		while(tryNum < 10 && !q.isEmpty())
+		{
+			tryNum++;
+			limit = count;
+			count = 0;
+			for (int k=0; k<limit; k++)
+			{
+			
+				vertex u = q.poll();
+				vertex bu = bq.poll();
+
+			
+				for (int i=0; i<4; i++)
+				{	
+					Rr = u.x;
+					Rc = u.y;
+					Br = bu.x;
+					Bc = bu.y;
+					Rmoving = 0;
+					Bmoving = 0;
+					
+					while (board[Rr+locus[i][0]][Rc+locus[i][1]] == '.') // move red first - as our goal is make red succeed.
+					{
+						Rr += locus[i][0];
+						Rc += locus[i][1];
+						Rmoving++;
+					}
+					
+					while (board[Br+locus[i][0]][Bc+locus[i][1]] == '.') // move blue
+					{
+						Br += locus[i][0];
+						Bc += locus[i][1];
+						Bmoving++;
+					}
+					
+					if (board[Br+locus[i][0]][Bc+locus[i][1]] == 'O') // check blue first.
+					{
+						continue;
+					}
+					
+					if (board[Rr+locus[i][0]][Rc+locus[i][1]] == 'O') // in case of success.
+					{
+						System.out.println(tryNum);
+						return;
+					}
+					else if (Rr == Br && Rc == Bc) // in case of same position.
+					{
+						if (Rmoving < Bmoving)
+						{
+							Br -= locus[i][0];
+							Bc -= locus[i][1];
+						}
+						else
+						{
+							Rr -= locus[i][0];
+							Rc -= locus[i][1];
+						}
+							q.add(new vertex(Rr, Rc));
+							bq.add(new vertex(Br, Bc));
+							count++;
+					}
+					else
+					{
+							q.add(new vertex(Rr, Rc));
+							bq.add(new vertex(Br, Bc));
+							count++;
+					}
+				}
+				
+			}	
+				
+		}
+		
+		System.out.println(-1);
+	}
+}
