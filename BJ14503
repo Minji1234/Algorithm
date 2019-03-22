@@ -90,7 +90,7 @@ public class BJ14503 {
 			{
 				DFS(v, newD);
 			}
-			else
+			else // both (not clean) && (not wall) case -> have to move and clean.
 			{
 				VT leftSpace = new VT(v.r+move[newD][0], v.c+move[newD][1]);
 				DFS(leftSpace, newD);
