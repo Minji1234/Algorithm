@@ -1,0 +1,107 @@
+import java.util.*;
+import java.io.*;
+
+class VT
+{
+	int r;
+	int c;
+	public VT(int r, int c)
+	{
+		this.r = r;
+		this.c = c;
+	}
+}
+
+public class BJ14503 { // DFS
+	static int row, col;
+	static int[][] room;
+	static int[][] move = { {-1, 0}, {0, 1}, {1, 0}, {0, -1} }; // when you move to nesw;
+	static int[] turnToLeft = {3, 0, 1, 2};
+	static int[] rear = {2, 3, 0, 1};
+	static boolean[][] clean;
+	static int count;
+	
+	public static void main(String[] args) throws IOException
+	{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		row = Integer.parseInt(st.nextToken());
+		col = Integer.parseInt(st.nextToken());
+		room = new int[row+1][col+1];
+		clean = new boolean[row+1][col+1]; // set to False;
+		count = 0;
+		st = new StringTokenizer(br.readLine());
+		int startR = Integer.parseInt(st.nextToken())+1;
+		int startC = Integer.parseInt(st.nextToken())+1;
+		int direction = Integer.parseInt(st.nextToken());
+		for (int i = 1; i <= row; i++)
+		{
+			st = new StringTokenizer(br.readLine());
+			for (int j = 1; j <= col; j++)
+			{
+				room[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
+		
+
+		DFS(new VT(startR, startC), direction);
+		System.out.println(count);
+	}
+	public static boolean checks(VT v)
+	{
+		boolean a, b, c, d;
+		a = clean[v.r][v.c-1] || room[v.r][v.c-1] == 1;
+		b = clean[v.r][v.c+1] || room[v.r][v.c+1] == 1;
+		c = clean[v.r+1][v.c] || room[v.r+1][v.c] == 1;
+		d = clean[v.r-1][v.c] || room[v.r-1][v.c] == 1;
+		return a&b&c&d;
+	}
+	public static void DFS(VT v, int dir)
+	{
+		int newD = turnToLeft[dir];
+		int rearD = rear[dir];
+		
+		
+		if (clean[v.r][v.c] == false)
+		{
+			count++;
+			clean[v.r][v.c] = true;
+		}
+
+		
+		if (checks(v))
+		{
+			if ((v.r+move[rearD][0] >= 1) && (v.r+move[rearD][0] <= row) && (v.c+move[rearD][1] >= 1) && (v.c+move[rearD][1] <= col))
+			{
+				if (room[v.r+move[rearD][0]][v.c+move[rearD][1]] == 1)
+				{
+					return;
+				}
+				else
+				{
+					VT rearSpace = new VT(v.r+move[rearD][0], v.c+move[rearD][1]);
+					DFS(rearSpace, dir);
+				}
+			}
+		}
+		
+		
+		else if ((v.r+move[rearD][0] >= 1) && (v.r+move[rearD][0] <= row) && (v.c+move[rearD][1] >= 1) && (v.c+move[rearD][1] <= col))
+		{
+			
+			if (clean[v.r+move[newD][0]][v.c+move[newD][1]] == true || room[v.r+move[newD][0]][v.c+move[newD][1]] == 1)
+			{
+				DFS(v, newD);
+			}
+			else
+			{
+				if ((v.r+move[newD][0] >= 2) && (v.r+move[newD][0] <= row-1) && (v.c+move[newD][1] >= 2) && (v.c+move[newD][1] <= col-1))
+				{
+					VT leftSpace = new VT(v.r+move[newD][0], v.c+move[newD][1]);
+					DFS(leftSpace, newD);
+				}
+			}
+			
+		}
+	}
+}
