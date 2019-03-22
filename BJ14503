@@ -12,7 +12,7 @@ class VT
 	}
 }
 
-public class BJ14503 { // DFS
+public class BJ14503 {
 	static int row, col;
 	static int[][] room;
 	static int[][] move = { {-1, 0}, {0, 1}, {1, 0}, {0, -1} }; // when you move to nesw;
@@ -71,22 +71,19 @@ public class BJ14503 { // DFS
 		
 		if (checks(v))
 		{
-			if ((v.r+move[rearD][0] >= 1) && (v.r+move[rearD][0] <= row) && (v.c+move[rearD][1] >= 1) && (v.c+move[rearD][1] <= col))
+			if (room[v.r+move[rearD][0]][v.c+move[rearD][1]] == 1)
 			{
-				if (room[v.r+move[rearD][0]][v.c+move[rearD][1]] == 1)
-				{
-					return;
-				}
-				else
-				{
-					VT rearSpace = new VT(v.r+move[rearD][0], v.c+move[rearD][1]);
-					DFS(rearSpace, dir);
-				}
+				return;
+			}
+			else
+			{
+				VT rearSpace = new VT(v.r+move[rearD][0], v.c+move[rearD][1]);
+				DFS(rearSpace, dir);
 			}
 		}
 		
 		
-		else if ((v.r+move[rearD][0] >= 1) && (v.r+move[rearD][0] <= row) && (v.c+move[rearD][1] >= 1) && (v.c+move[rearD][1] <= col))
+		else
 		{
 			
 			if (clean[v.r+move[newD][0]][v.c+move[newD][1]] == true || room[v.r+move[newD][0]][v.c+move[newD][1]] == 1)
@@ -95,11 +92,8 @@ public class BJ14503 { // DFS
 			}
 			else
 			{
-				if ((v.r+move[newD][0] >= 2) && (v.r+move[newD][0] <= row-1) && (v.c+move[newD][1] >= 2) && (v.c+move[newD][1] <= col-1))
-				{
-					VT leftSpace = new VT(v.r+move[newD][0], v.c+move[newD][1]);
-					DFS(leftSpace, newD);
-				}
+				VT leftSpace = new VT(v.r+move[newD][0], v.c+move[newD][1]);
+				DFS(leftSpace, newD);
 			}
 			
 		}
