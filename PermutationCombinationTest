@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class PermutationCombinationTest { // practice
+public class PermutationCombinationTest {
 	static int K, N;
 	static boolean[] visited;
 	static int[] result;
@@ -54,7 +54,7 @@ public class PermutationCombinationTest { // practice
 		}
 	}
 	
-	public static void combination()
+	public static void combination() // nCk (K <= N)
 	{
 		for (int i = 0; i < N - K + 1; i++)
 		{
