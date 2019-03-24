@@ -157,7 +157,7 @@ public class PermutationCombinationTest {
 			}
 			else
 			{
-				arr[0] = tt.charAt(0);
+				arr[0] = Integer.parseInt(tt);
 				for (int i = 1; i < N; i++)
 				{
 					arr[i] = sc.nextInt();
