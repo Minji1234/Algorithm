@@ -1,0 +1,72 @@
+import java.io.*;
+import java.util.*;
+
+public class Main1 { // NlogN solution for LIS from https://shoark7.github.io/programming/algorithm/3-LIS-algorithms
+	public static int[] arr;
+	public static int[] lis;
+	public static int lowerBound(int from, int to, int val)
+	{
+		int mid;
+		while (from < to)
+		{
+			mid = (from + to) / 2;
+			if (val > lis[mid])
+			{
+				from = mid + 1;
+			}
+			else
+			{
+				to = mid;
+			}
+		}
+		return from;
+	}
+/*	public static int uppderBound(int from, int to, int val)
+	{
+		int mid;
+		while (from < to)
+		{
+			mid = (from + to) / 2;
+			if (val >= lis[mid])
+			{
+				from = mid + 1;
+			}
+			else
+			{
+				to = mid;
+			}
+		}
+		return to;
+	} */
+	public static void main(String[] args) throws IOException
+	{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		arr = new int[1000001];
+		lis = new int[1000001]; // lis[i] = 길이가 i인 증가수열들 중에서 최소의 마지막 값
+		int inputNum = Integer.parseInt(st.nextToken());
+		st = new StringTokenizer(br.readLine());
+		for (int i = 1; i <= inputNum; i++)
+		{
+			arr[i] = Integer.parseInt(st.nextToken());
+		}
+		lis[1] = arr[1];
+		int lisIndex = 1;
+		for (int i = 2; i <= inputNum; i++)
+		{
+			if (lis[lisIndex] < arr[i])
+			{
+				lisIndex++;
+				lis[lisIndex] = arr[i];
+			}
+			else
+			{
+				lis[lowerBound(1, lisIndex, arr[i])] = arr[i];
+			}
+		}
+		bw.write(lisIndex+"\n");
+		bw.flush();
+		bw.close();
+	}
+}
