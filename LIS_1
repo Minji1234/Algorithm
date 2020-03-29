@@ -1,0 +1,46 @@
+import java.io.*;
+import java.util.*;
+
+public class Main { // 2^N Solution for LIS
+	public static ArrayList<Integer> arr;
+	public static int exp(ArrayList<Integer> arl)
+	{
+		if (arl.isEmpty())
+		{
+			return 0;
+		}
+		int standard;
+		int ret = 0;
+		ArrayList<Integer> subArl = new ArrayList<Integer>();
+		for (int i = 0; i < arl.size(); i++)
+		{
+			standard = arl.get(i);
+			for (int j = i+1; j < arl.size(); j++)
+			{
+				if (standard < arl.get(j))
+				{
+					subArl.add(arl.get(j));
+				}
+			}
+			ret = Math.max(ret, 1 + exp(subArl));
+			subArl = new ArrayList<Integer>();
+		}
+		return ret;
+	}
+	public static void main(String[] args) throws IOException
+	{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		arr = new ArrayList<Integer>();
+		int inputNum = Integer.parseInt(st.nextToken());
+		st = new StringTokenizer(br.readLine());
+		for (int i = 0; i < inputNum; i++)
+		{
+			arr.add(i, Integer.parseInt(st.nextToken()));
+		}
+		bw.write(exp(arr) + "\n");
+		bw.flush();
+		bw.close();
+	}
+}
