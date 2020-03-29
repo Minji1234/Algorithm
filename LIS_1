@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Main { // 2^N Solution for LIS
+public class Main { // 2^N solution for LIS from book
 	public static ArrayList<Integer> arr;
 	public static int exp(ArrayList<Integer> arl)
 	{
