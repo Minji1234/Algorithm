@@ -1,0 +1,82 @@
+import java.io.*;
+import java.util.*;
+
+public class Main { // NlogN solution for LIS which prints out one of the LIS.
+	public static int[] arr;
+	public static int[] lis;
+	public static int[] lisIndex;
+	public static int lowerBound(int from, int to, int val)
+	{
+		int mid;
+		while (from < to)
+		{
+			mid = (from + to) / 2;
+			if (val > lis[mid])
+			{
+				from = mid + 1;
+			}
+			else
+			{
+				to = mid;
+			}
+		}
+		return from;
+	}
+	public static void backtracking(int to, int lis_Index)
+	{
+		if (lis_Index == 0)
+		{
+			return;
+		}
+		if (lisIndex[to] == lis_Index)
+		{
+			backtracking(to - 1, lis_Index - 1);
+			System.out.print(arr[to] + " ");
+		}
+		else
+		{
+			backtracking(to - 1, lis_Index);
+		}
+	}
+	public static void main(String[] args) throws IOException
+	// https://shoark7.github.io/programming/algorithm/3-LIS-algorithms
+	// https://wordbe.tistory.com/entry/DP-LIS-%EC%B5%9C%EC%9E%A5-%EA%B3%B5%ED%86%B5-%EB%B6%80%EB%B6%84-%EC%88%98%EC%97%B4
+	{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		arr = new int[1001];
+		lis = new int[1001]; // lis[i] = 길이가 i인 증가수열들 중에서 최소의 마지막 값
+		lisIndex = new int[1001]; // lisIndex[i] arr의 i번째 원소가 lis 배열에서 위치하는 인덱스 https://wordbe.tistory.com/entry/DP-LIS-%EC%B5%9C%EC%9E%A5-%EA%B3%B5%ED%86%B5-%EB%B6%80%EB%B6%84-%EC%88%98%EC%97%B4
+		int inputNum = Integer.parseInt(st.nextToken());
+		st = new StringTokenizer(br.readLine());
+		for (int i = 1; i <= inputNum; i++)
+		{
+			arr[i] = Integer.parseInt(st.nextToken());
+		}
+		lisIndex[1] = 1;
+		lis[1] = arr[1];
+		int lis_Index = 1;
+		int index;
+		for (int i = 2; i <= inputNum; i++)
+		{
+			if (lis[lis_Index] < arr[i])
+			{
+				lis_Index++;
+				lisIndex[i] = lis_Index;
+				lis[lis_Index] = arr[i];
+			}
+			else
+			{
+				index = lowerBound(1, lis_Index, arr[i]);
+				lisIndex[i] = index;
+				lis[index] = arr[i];
+			}
+		}
+		bw.write(lis_Index+"\n");
+		bw.flush();
+		backtracking(inputNum, lis_Index);
+		bw.write("\n");
+		bw.close();
+	}
+}
