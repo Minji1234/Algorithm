@@ -1,0 +1,43 @@
+import java.io.*;
+import java.util.*;
+
+public class Main { // N^2 solution for LIS from book
+	public static int[] arr;
+	public static int[] lis;
+	public static int inputNum;
+	public static int n_square(int startIndex)
+	{
+		if (lis[startIndex + 1] != -1)
+		{
+			return lis[startIndex + 1];
+		}
+		int ret = 1;
+		for (int i = startIndex + 1; i < inputNum; i++)
+		{
+			if (startIndex == -1 || arr[startIndex] < arr[i])
+			{
+				ret = Math.max(ret, 1 + n_square(i));
+			}
+		}
+		return lis[startIndex + 1] = ret;
+	}
+	public static void main(String[] args) throws IOException
+	{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		arr = new int[1000];
+		lis = new int[1001];
+		inputNum = Integer.parseInt(st.nextToken());
+		Arrays.fill(lis, 0, inputNum + 1, -1);
+		st = new StringTokenizer(br.readLine());
+		for (int i = 0; i < inputNum; i++)
+		{
+			arr[i] = Integer.parseInt(st.nextToken());
+		}
+		// As real index starts from 1, not 0 - as it consider and count fake index 0 for once, have to subtract 1.
+		bw.write(n_square(-1) - 1 + "\n");
+		bw.flush();
+		bw.close();
+	}
+}
