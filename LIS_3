@@ -41,3 +41,52 @@ public class Main { // N^2 solution for LIS from book
 		bw.close();
 	}
 }
+
+// 아래처럼 index를 0이 아니라 1로 조정하면 Arrays.fill 함수를 사용하는데 런타임 에러가 생길 확률이 높으므로 위처럼 구현하는 것이 낫다.
+// (n_square 메소드가 index가 inputNum+1인 곳까지 탐색하므로 Arrays.fill(lis, 0, inputNum+2, -1);를 사용해야 하는데
+//
+//
+
+import java.io.*;
+import java.util.*;
+
+class Main
+{
+	public static int[] arr;
+	public static int[] lis;
+	public static int inputNum;
+	public static int n_square(int index)
+	{
+		if (lis[index] != -1)
+		{
+			return lis[index];
+		}
+		int ret = 1;
+		for (int i = index+1; i <= inputNum; i++)
+		{
+			if (index == 0 || arr[index] < arr[i])
+			{
+				ret = Math.max(ret, 1+n_square(i));
+			}
+		}
+		return lis[index] = ret;
+	}
+	public static void main(String[] args) throws IOException
+	{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		arr = new int[1001];
+		lis = new int[1002];
+		inputNum = Integer.parseInt(st.nextToken());
+		Arrays.fill(lis, 0, inputNum+2, -1);
+		st = new StringTokenizer(br.readLine());
+		for (int i = 1; i <= inputNum; i++)
+		{
+			arr[i] = Integer.parseInt(st.nextToken());
+		}
+		bw.write(n_square(0) - 1 + "\n");
+		bw.flush();
+		bw.close();
+	}
+}
