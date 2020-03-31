@@ -21,7 +21,7 @@ public class Main1 { // NlogN solution for LIS from https://shoark7.github.io/pr
 		}
 		return from; // while 탈출 조건이 from >= to이므로 사실상 from == to일 때 탈출하므로 return from 대신 return to로 써도 된다.
 	}
-/*	public static int uppderBound(int from, int to, int val)
+/*	public static int upperBound(int from, int to, int val)
 	{
 		int mid;
 		while (from < to)
