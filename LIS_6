@@ -1,0 +1,94 @@
+import java.io.*;
+import java.util.*;
+
+class Pair
+{
+	public int left;
+	public int right;
+	
+	public Pair(int left, int right)
+	{
+		this.left = left;
+		this.right = right;
+	}
+}
+
+public class Main // Solved with segment tree - https://suuntree.tistory.com/35
+{
+	public static ArrayList<Pair> pairs;
+	public static int[] arr;
+	public static int[] segTree;
+//	public static int init(int from, int to, int node)
+//	{
+//		if (from == to)
+//		{
+//			return segTree[node] = arr[from];
+//		}
+//		else
+//		{
+//			int mid = (from + to) / 2;
+//			return segTree[node] = Math.max(init(from, mid, 2*node), init(mid+1, to, (2*node)+1));
+//		}
+//	}
+	public static int query(int from, int to, int node, int nodeLeft, int nodeRight)
+	{
+		if (to < nodeLeft || nodeRight < from)
+		{
+			return 0;
+		}
+		else if (from <= nodeLeft && nodeRight <= to)
+		{
+			return segTree[node];
+		}
+		else
+		{
+			int mid = (nodeLeft + nodeRight) / 2;
+			return Math.max(query(from, to, node*2, nodeLeft, mid), query(from, to, (node*2)+1, mid+1, nodeRight));
+		}
+	}
+	public static int update(int index, int val, int node, int nodeLeft, int nodeRight)
+	{
+		if (index < nodeLeft || nodeRight < index)
+		{
+			return segTree[node];
+		}
+		else if (nodeLeft == nodeRight)
+		{
+			return segTree[node] = val;
+		}
+		else
+		{
+			int mid = (nodeLeft + nodeRight) / 2;
+			return segTree[node] = Math.max(update(index, val, node*2, nodeLeft, mid), update(index, val, (node*2)+1, mid+1, nodeRight));
+		}
+	}
+	public static void main(String[] args) throws IOException
+	{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		pairs = new ArrayList<Pair>();
+		arr = new int[1000];
+		segTree = new int[1000*4+1];
+		int inputNum = Integer.parseInt(st.nextToken());
+		st = new StringTokenizer(br.readLine());
+		for (int i = 0; i < inputNum; i++)
+		{
+			arr[i] = Integer.parseInt(st.nextToken());
+			pairs.add(new Pair(arr[i], i));
+		}
+		Collections.sort(pairs, (Pair o1, Pair o2) -> o1.left == o2.left ? o2.right - o1.right : o1.left - o2.left);
+		Pair p;
+		int max, idx;
+		for (int i = 0; i < inputNum; i++)
+		{
+			p = pairs.get(i);
+			idx = p.right;
+			max = query(0, idx, 1, 0, inputNum-1);
+			update(idx, 1+max, 1, 0, inputNum-1);
+		}
+		bw.write(segTree[1] + "\n");
+		bw.flush();
+		bw.close();
+	}
+}
