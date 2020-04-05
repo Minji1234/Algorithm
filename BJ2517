@@ -1,0 +1,58 @@
+import java.io.*;
+import java.util.*;
+
+public class Main
+{
+	public static Map<Integer, Integer> compressedRunnersSkill;
+	public static int[] runnersSkill;
+	public static int[] skills;
+	public static int[] fenwick;
+	public static int runnersNum;
+	public static void update(int index, int diff)
+	{
+		while (index <= runnersNum)
+		{
+			fenwick[index] += diff;
+			index += (index & (-index));
+		}
+	}
+	public static long sum(int index)
+	{
+		long sum = 0;
+		while (index > 0)
+		{
+			sum += fenwick[index];
+			index -= (index & (-index));
+		}
+		return sum;
+	}
+	public static void main(String[] args) throws IOException
+	{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		compressedRunnersSkill = new HashMap<Integer, Integer>();
+		runnersSkill = new int[500001];
+		skills = new int[500001];
+		fenwick = new int[500001];
+		runnersNum = Integer.parseInt(st.nextToken());
+		for (int i = 1; i <= runnersNum; i++)
+		{
+			st = new StringTokenizer(br.readLine());
+			runnersSkill[i] = Integer.parseInt(st.nextToken());
+			skills[i] = runnersSkill[i];
+		}
+		Arrays.sort(skills, 1, runnersNum+1);
+		for (int i = 1; i <= runnersNum; i++)
+		{
+			compressedRunnersSkill.put(skills[i], i);
+		}
+		int skill, compSkill;
+		for (int i = 1; i <= runnersNum; i++)
+		{
+			skill = runnersSkill[i];
+			compSkill = compressedRunnersSkill.get(skill);
+			System.out.println(sum(runnersNum) - sum(compSkill) + 1);
+			update(compSkill, 1);
+		}
+	}
+}
